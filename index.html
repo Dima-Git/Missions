@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Mission Monitor</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+<body>
+
+<!-- Path to mission -->
+<div id="path">
+</div>
+
+<!-- Mission box -->
+<div class="box">
+
+    <!-- Options -->
+    <div id="itemselect" class="option">Select</div>
+    <div id="iteminclude" class="option">Include</div>
+    <div id="itemdone" class="option pr-done">Done</div>
+
+    <!-- Mission title -->
+    <div id="titlelabel" class="label">Title :</div>
+    <div id="title" class="edit"></div>
+
+    <!-- Mission description -->
+    <div id="descriptionlabel" class="label">Description :</div>
+    <div id="description" class="edit"></div>
+
+    <!-- Submission list -->
+    <div id="submissionslabel" class="label">Submissions :</div>
+    <div id="submissions"></div>
+
+    <!-- Add mission item -->
+    <div id="add">Add mission...</div>
+
+</div>
+
+<script src="mission.js"></script>
+<script src="bridge.js"></script>
+<script src="storage.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
