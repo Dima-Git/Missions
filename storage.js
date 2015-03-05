@@ -1,49 +1,43 @@
-function recsearch(mission, data) {
-    for ( var i = 0 ; i < data.length ; ++ i )
-        if ( data[i].mission == mission )
+function recsearch(tree, linear) {
+    for ( var i = 0 ; i < linear.length ; ++ i )
+        if ( linear[i].link == tree )
             return i;
-    return recinclude(mission, data);
+    return recinclude(tree, linear);
 }
 
-function recinclude(mission, data) {
-    var idx = data.length;
-    data[idx] = {};
-    data[idx].title = mission.title;
-    data[idx].mission = mission;
-    data[idx].description = mission.description;
-    data[idx].subMissions = [];
-    for ( var i = 0 ; i < mission.subMissions.length ; ++ i ) {
-        console.log("searchin");
-        data[idx].subMissions[i] = recsearch(mission.subMissions[i], data);
-    }
+function recinclude(tree, linear) {
+    var idx = linear.length;
+    linear[idx] = {
+        link:           tree,
+        data:           tree.data,
+        indexes:        []
+    };
+    for ( var i = 0 ; i < tree.subTrees.length ; ++ i )
+        linear[idx].indexes[i] = recsearch(tree.subTrees[i], linear);
     return idx;
 }
 
-function save(rootMission) {
-    var data = [];
-    recinclude(rootMission, data);
-    for ( var i = 0 ; i < data.length ; ++ i )
-        delete data[i].mission;
-    localStorage.setItem("save", JSON.stringify(data));
+function save(root) {
+    var linear = [];
+    recinclude(root, linear);
+    for ( var i = 0 ; i < linear.length ; ++ i )
+        delete linear[i].link;
+    localStorage.setItem("save", JSON.stringify(linear));
 }
 
-function construct(i, missions, data) {
-    var mission = new Mission();
-    mission.title = data[i].title;
-    mission.description = data[i].description;
-    console.log( JSON.stringify( data[i] ));
-    for ( var j = 0 ; j < data[i].subMissions.length ; ++ j ) {
-        if ( missions[data[i].subMissions[j]] === undefined )
-            missions[data[i].subMissions[j]] = construct(data[i].subMissions[j], missions, data);
-        mission.subMissions[j] = missions[data[i].subMissions[j]];
-    }
-    mission[i] = mission;
-    return mission;
+function construct(i, forest, linear) {
+    forest[i] = new Tree(linear[i].data);
+    linear[i].indexes.forEach(function(j){
+        if ( forest[j] === undefined )
+            forest[j] = construct(j, forest, linear);
+        forest[i].subTrees.push(forest[j]);
+    });
+    return forest[i];
 }
 
 function load() {
-    var data = JSON.parse(localStorage.getItem("save"));
-    if ( data === null ) return new Mission();
-    var missions = [];
-    return construct(0, missions, data);
+    var linear = JSON.parse(localStorage.getItem("save"));
+    if ( linear === null ) return null;
+    var forest = [];
+    return construct(0, forest, linear);
 }

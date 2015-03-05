@@ -79,11 +79,18 @@ body {
     background-color: #203020;
     margin: 0 0 5px 5px;
 }
+#deadline {
+    background-color: #202030;
+    margin: 0 0 5px 5px;
+}
 
 .label {
     opacity: 0.2;
 }
 #descriptionlabel {
+    margin: 5px 0 0 5px;
+}
+#deadlinelabel {
     margin: 5px 0 0 5px;
 }
 #submissionslabel {
@@ -123,10 +130,8 @@ body {
     margin-left: 10px;
     width: 200px;
     border-radius: 0 0 500% 0;
-    transition: 300ms;
 }
 #add:hover {
     cursor: pointer;
     background: linear-gradient(to right, #306020, #0e0e0e);
-    transition: 10ms;
 }

@@ -1,47 +1,72 @@
-function Bridge(mission) {
-    this.missionPath = [mission];
-    this.missionSelected = undefined;
+function Bridge(tree) {
+    this.path = [tree];
+    this.treeSelected = undefined;
 }
 
+// #### Methods
 Bridge.prototype.goPath = function(i) {
-    this.missionPath = this.missionPath.slice(0,i+1);
+    this.path = this.path.slice(0,i+1);
 };
 
 Bridge.prototype.goSub = function(i) {
-    this.missionPath.push(i);
+    this.path.push(i);
 };
 
 Bridge.prototype.deleteSub = function(i) {
-    this.current().subMissions.splice(i,1);
+    this.current().subTrees.splice(i,1);
 };
 
+Bridge.prototype.add = function() {
+    this.subTrees().push(new Tree(new Mission()));
+};
+
+Bridge.prototype.include = function() {
+    if ( this.treeSelected !== undefined )
+        this.subTrees().push(this.treeSelected);
+};
+
+Bridge.prototype.select = function() {
+    this.treeSelected = this.current();
+};
+
+// ##### Getters
 Bridge.prototype.current = function() {
-    return this.missionPath[this.missionPath.length - 1];
+    return this.path[this.path.length - 1];
 };
 
-Bridge.prototype.missionDone = function() {
-    this.current().isDone = !this.current().isDone;
+Bridge.prototype.data = function() {
+    return this.current().data;
 };
 
-Bridge.prototype.missionAdd = function() {
-    var newMission = new Mission();
-    this.current().subMissions.push(newMission);
-    this.goSub(newMission);
+Bridge.prototype.subTrees = function() {
+    return this.current().subTrees;
 };
 
-Bridge.prototype.missionInclude = function() {
-    this.current().subMissions.push(this.missionSelected);
+Bridge.prototype.subBridge = function(i) {
+    return new Bridge(this.subTrees()[i]);
 };
 
-Bridge.prototype.missionSelect = function() {
-    this.missionSelected = this.current();
+// ##### Get\Setters
+Bridge.prototype.done = function(value) {
+    if ( value !== undefined )
+        this.data().isDone = value;
+    return this.data().isDone;
 };
 
-Bridge.prototype.setTitle = function(s) {
-    this.current().title = s;
+Bridge.prototype.title = function(value) {
+    if ( value !== undefined )
+        this.data().title = value;
+    return this.data().title;
 };
 
-Bridge.prototype.setDescription = function(s) {
-    this.current().description = s;
+Bridge.prototype.description = function(value) {
+    if ( value !== undefined )
+        this.data().description = value;
+    return this.data().description;
 };
 
+Bridge.prototype.deadline = function(value) {
+    if ( value !== undefined )
+        this.data().deadline = new Date(value).valueOf();
+    return this.data().deadline;
+};
