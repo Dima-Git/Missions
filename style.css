@@ -106,7 +106,7 @@ body {
 .mission:hover {
     cursor: pointer;
     background: #204020;
-    transition: 400ms;
+    transition: 50ms;
     border-radius: 10px;
 }
 
